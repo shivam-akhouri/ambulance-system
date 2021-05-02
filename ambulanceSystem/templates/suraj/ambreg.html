@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register Ambulance
+{% endblock %}
+
+{% block main %}
+
+
+    <div class="form-style-5">
+        <form action="/home/ambulanceRegister/" method="POST">
+        {% csrf_token %}
+        <fieldset>
+        <legend>Register Ambulance</legend>
+            <input autocomplete='off' name="DriverName" placeholder="Name" type="text">
+            <input autocomplete='off' name="Hospital" placeholder="Hospital" type="text">
+            <input autocomplete='off' name="Username" placeholder="Username" type="text">
+            <input autocomplete='off' name="PhoneNo" placeholder="Phone Number" type="tel">
+            <input autocomplete='off' name="AmbulanceNo" placeholder="Registration Number/Number plate" type="text">
+            <input autocomplete='off' name="Password" placeholder="Enter Password" type="text">
+            <input autocomplete='off' name="ConfirmPassword" placeholder="Confirm Password" type="text">
+            <input type="submit" value="Register" />
+        </form>
+    </div>
+{% endblock %}
+      

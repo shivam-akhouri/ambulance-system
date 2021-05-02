@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block script %}
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYQqutojS1wRC28EsvUDhh-DE5nuF2MAI&callback=initMap"></script>
+    
+<script>
+    // Note: This example requires that you consent to location sharing when
+    // prompted by your browser. If you see the error "The Geolocation service
+    // failed.", it means you probably did not give permission for the browser to
+    // locate you.
+    let map, infoWindow;
+    
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 16,
+      });
+      infoWindow = new google.maps.InfoWindow();
+      const locationButton = document.createElement("button");
+      locationButton.textContent = "Pan to Current Location";
+      locationButton.classList.add("custom-map-control-button");
+      map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+      locationButton.addEventListener("click", () => {
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+           
+            (position) => {
+              const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              
+              infoWindow.open(map);
+              map.setCenter(pos);
+              const icons = {
+                ambulance: {
+                    url: "https://www.flaticon.com/svg/vstatic/svg/2991/2991352.svg?token=exp=1619865074~hmac=a506b1a6ac273c2138c67390e9944585",
+                    scaledSize: new google.maps.Size(62,80)
+                }
+            }
+              const features =[ 
+              {
+                position: pos,
+                type: "ambulance",
+            }
+            ];
+            for (let i = 0; i < features.length; i++) {
+                const marker = new google.maps.Marker({
+                position: features[i].position,
+                icon: icons[features[i].type],
+                
+                map: map,
+            });
+            
+            }
+            },
+            () => {
+              handleLocationError(true, infoWindow, map.getCenter());
+            }
+          );
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+        
+      });
+    }
+    
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(
+        browserHasGeolocation
+          ? "Error: The Geolocation service failed."
+          : "Error: Your browser doesn't support geolocation."
+      );
+      infoWindow.open(map);
+    }</script>
+{% endblock %}
+{% block title %}
+    Ambulances in your area
+{% endblock %}
+{% block main %}
+<h1>Ambulances in your area</h1>
+<div id="map"></div>
+<form class="form-style-5">
+<input type="submit" value="Order"/>
+</form>
+{% endblock %}

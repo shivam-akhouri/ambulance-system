@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register Ambulance
+{% endblock %}
+
+{% block main %}
+
+
+    <div class="form-style-5">
+        <form>
+        <fieldset>
+        <legend>Register Ambulance</legend>
+        <input autocomplete='off' name="FirstName" style="width: 225px; display:flexbox;"  placeholder="First Name" type="text">
+        <input autocomplete='off' name="LastName" style="width: 225px; display:flexbox;" placeholder="Last Name" type="text">
+        <input autocomplete='off' name="Username" placeholder="Username" type="text">
+        <input autocomplete='off' name="PhoneNo" placeholder="Phone Number" type="tel">
+        <input autocomplete='off' name="Password" placeholder="Enter Password" type="text">
+        <input autocomplete='off' name="ConfirmPassword" placeholder="Confirm Password" type="text">
+        <input type="submit" value="Register" />
+        </form>
+        </div>
+{% endblock %}
+      

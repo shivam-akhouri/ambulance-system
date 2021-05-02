@@ -1,0 +1,349 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Log In
+{% endblock %}
+
+{% block main %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+<div class="container" ml=4>
+    <h1 style="color:black; background-color:yellow; text-align: center; font-family: Times New Roman, Times, serif;"
+        py=5 mx=3>DOCTORS HUT</h1>
+</div>
+
+
+<style>
+    #map {
+        height: 400px;
+        /* The height is 400 pixels */
+        width: 100%;
+        /* The width is the width of the web page */
+        margin: auto;
+        display: flex;
+        border-radius: 20px;
+        box-shadow: 10px 10px 50px #a3aaaf;
+        transition-duration: 2s;
+        margin-top: 20px;
+    }
+</style>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYQqutojS1wRC28EsvUDhh-DE5nuF2MAI&callback=initMap"></script>
+
+<script>
+    // Note: This example requires that you consent to location sharing when
+    // prompted by your browser. If you see the error "The Geolocation service
+    // failed.", it means you probably did not give permission for the browser to
+    // locate you.
+    let map, infoWindow;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 16,
+        });
+        infoWindow = new google.maps.InfoWindow();
+        const locationButton = document.createElement("button");
+        locationButton.textContent = "Pan to Current Location";
+        locationButton.classList.add("custom-map-control-button");
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+        locationButton.addEventListener("click", () => {
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+
+                    (position) => {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+
+                        infoWindow.open(map);
+                        map.setCenter(pos);
+                        const icons = {
+                            ambulance: {
+                                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Ambulance_Car_Flat_Icon_Vector.svg/1024px-Ambulance_Car_Flat_Icon_Vector.svg.png",
+                                scaledSize: new google.maps.Size(62, 80)
+                            },
+                            number1: {
+
+                                url: "https://image.flaticon.com/icons/png/128/179/179349.png",
+
+                                scaledSize: new google.maps.Size(30, 30)
+
+                            },
+
+                            number2: {
+
+                                url: "https://image.flaticon.com/icons/png/128/179/179350.png",
+
+                                scaledSize: new google.maps.Size(30, 30)
+
+                            },
+
+                            number3: {
+
+                                url: "https://image.flaticon.com/icons/png/128/179/179351.png",
+
+                                scaledSize: new google.maps.Size(30, 30)
+
+                            },
+
+                            number4: {
+
+                                url: "https://image.flaticon.com/icons/png/128/179/179352.png",
+
+                                scaledSize: new google.maps.Size(30, 30)
+
+                            },
+
+                            number5: {
+
+                                url: "https://image.flaticon.com/icons/png/128/179/179357.png",
+
+                                scaledSize: new google.maps.Size(30, 30)
+
+                            },
+
+                            number6: {
+
+                                url: "https://image.flaticon.com/icons/png/128/179/179358.png",
+
+                                scaledSize: new google.maps.Size(30, 30)
+
+                            }
+                        }
+
+                        const features = [
+                            {
+                                position: pos,
+                                type: "ambulance",
+                            },
+                            {
+                                position: { lat: pos.lat + 0.000543, lng: pos.lng + 0.000543 },
+                                type: "ambulance",
+                            },
+                            {
+                                position: { lat: pos.lat - 0.001743, lng: pos.lng + 0.004433 },
+                                type: "ambulance",
+                            },
+                            {
+                                position: { lat: pos.lat + 0.002760, lng: pos.lng + 0.003433 },
+                                type: "ambulance",
+                            },
+                            {
+                                position: { lat: pos.lat - 0.002760, lng: pos.lng - 0.004533 },
+                                type: "ambulance",
+                            },
+                            {
+
+                                position: pos,
+
+                                type: "number1",
+
+                            },
+
+                            {
+
+                                position: { lat: pos.lat + 0.000543, lng: pos.lng + 0.000543 },
+
+                                type: "number2",
+
+                            },
+
+                            {
+
+                                position: { lat: pos.lat - 0.001743, lng: pos.lng + 0.004433 },
+
+                                type: "number3",
+
+                            },
+
+                            {
+
+                                position: { lat: pos.lat + 0.002760, lng: pos.lng + 0.003433 },
+
+                                type: "number4",
+
+                            },
+
+                            {
+
+                                position: { lat: pos.lat - 0.002760, lng: pos.lng - 0.004533 },
+
+                                type: "number5",
+
+                            },
+                        ];
+                        for (let i = 0; i < features.length; i++) {
+                            const marker = new google.maps.Marker({
+                                position: features[i].position,
+                                icon: icons[features[i].type],
+
+                                map: map,
+                            });
+
+                        }
+                    },
+                    () => {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                    }
+                );
+            } //else {
+            // Browser doesn't support Geolocation
+            //handleLocationError(false, infoWindow, map.getCenter());
+            //}
+
+        });
+    }
+
+    //function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    //  infoWindow.setPosition(pos);
+    //  infoWindow.setContent(
+     //  browserHasGeolocation
+      //    ? "Error: The Geolocation service failed."
+      //    : "Error: Your browser doesn't support geolocation."
+     // );
+      //infoWindow.open(map);
+    //}
+</script>
+
+
+<div id="map"></div>
+<div class="my-5"></div>
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+
+
+    <title>DOC SIDE</title>
+</head>
+
+<body>
+
+
+
+    <div class="container">
+        {% for ambulance in result %}
+        <div class="list-group">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{ambulance.id}}">
+                {{ambulance.username}}
+            </button>
+
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal{{ambulance.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">AMBULANCE INFO</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="exampleFormControlInput1" class="form-label">AMBULANCE REGISTRATION
+                                NUMBER</label>
+                            <textarea readonly class="form-control" id="exampleFormControlTextarea1"
+                                rows="3" >{{ambulance.username}}</textarea>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">DRIVER'S NAME</label>
+                                <textarea readonly class="form-control" id="exampleFormControlTextarea1"
+                                    rows="3">{{ambulance.ambulance.driverName}}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">NURSES ON DUTY</label>
+                                <textarea readonly class="form-control" id="exampleFormControlTextarea1"
+                                    rows="3"> {{ambulance.ambulance.healthWorker}}</textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary"><a style="color:white;" href="{{ambulance.ambulance.ambulanceGmeet}}"
+                                    class="button">CONNECT
+                                    TO CALL</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="my-5"></div>
+
+        <div class="container" ml=4>
+            <h4 style="color:black; background-color:yellow; text-align: center; font-family: Times New Roman, Times, serif;"
+                py=5 mx=3>Ambulance Alerts</h1>
+        </div>
+        
+        <ul class="list-group" id="ambulancealert">
+            
+        </ul>
+
+        <br><br>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+        <script defer>
+            var l = document.getElementById('ambulancealert');
+            var counter = 0
+            $.get("http://127.0.0.1:8000/home/messages/",
+                
+                function(result){
+                    for (const d in result['data']) {
+                        l.innerHTML += `<li class="list-group-item" ><a href="${result['data'][d]['meetingLink']}" target='_blank'>${result['data'][d]['ambulanceName']}-${parseInt(d)+1}</a></li>`
+                        counter++;
+                    }
+                });
+            setInterval(() => {
+                $.get("http://127.0.0.1:8000/home/messages/",
+               
+                function(result){   
+                    var check = 0
+                    for (const d in result['data']) {
+                        check++;
+                    }
+                    if(check > counter){
+                        l.innerHTML += `<li class="list-group-item" ><a href="${result['data'][check-1]['meetingLink']}" target='_blank'>${result['data'][check-1]['ambulanceName']}-${parseInt(check)}</a></li>`
+                        counter++;
+                        alert("New Meeting found.");
+                    }
+                });
+            }, 2000
+            );
+             
+        </script>
+
+        <style>
+            li a{
+                text-decoration: none;
+            }
+        </style>
+       
+</body>
+
+
+
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+    crossorigin="anonymous"></script>
+
+{% endblock %}
